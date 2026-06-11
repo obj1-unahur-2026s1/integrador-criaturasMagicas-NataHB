@@ -60,3 +60,35 @@ class MascotaMitologica{
 
   method esVeterana() = edad >= 10
 }
+
+//area
+class Area {
+  var coloniaQueLaHabita
+  method poderDefensivo() = coloniaQueLaHabita.poderDefensivoDeLaColonia()
+  method serInvadidoPor(coloniaNueva) {
+    coloniaQueLaHabita = coloniaNueva
+  }
+}
+class Claro inherits Area {
+  override method poderDefensivo() = coloniaQueLaHabita.poderOfensivoDeLaColonia() + 100
+}
+
+class Castillo inherits Area {
+  override method poderDefensivo() = 200 * coloniaQueLaHabita.cantidadCriaturasFormidables()
+}
+
+//colonia
+class Colonia{
+  const criaturas  = []
+
+  method cantidadCriaturasFormidables() = criaturas.count({c=>c.esFormidable()})
+  method poderOfensivoDeLaColonia() = criaturas.sum({c => c.poderOfensivo()}) 
+  method conquistarArea(area) {
+    if (self.poderOfensivoDeLaColonia() > area.poderDefensivo()) {
+        area.serInvadidoPor(self)
+      }
+    else {
+      criaturas.forEach({c=>c.poderMagico()-(c.poderMagico()*0.15)})
+    }
+  }
+}
