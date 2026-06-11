@@ -26,8 +26,6 @@ class Duende inherits Criatura{
 
 
 //roles
-
-
 object guardian {
   method poderExtra() = 100
   method esExtraordinario(criatura) = criatura.poderMagico() > 50
@@ -35,16 +33,16 @@ object guardian {
 }
 
 class Domador {
-  method poderExtra() = 150 * self.cantidadMascotasConCuernos()
   const property mascotas = []
+  method poderExtra() = 150 * self.cantidadMascotasConCuernos()
   method domesticar(mascota) {
     mascotas.add(mascota)
   }
   method cantidadMascotasConCuernos() = mascotas.count({mascota => mascota.tieneCuernos()})
-  method sonMascotasVeteranas() = mascotas.all({mascota => mascota.esVeterana()})
-  method esExtraordinario(criatura) = criatura.poderMagico() >= 15 and self.sonMascotasVeteranas()
-  method nuevoRol() = if (self.cantidadMascotasConCuernos() > 0) {hechicero} else throw new Exception(message="No se puede cambiar a hechicero sin mascotas con cuernos")
-
+  method sonTodasMascotasVeteranas() = mascotas.all({mascota => mascota.esVeterana()})
+  method esExtraordinario(criatura) = criatura.poderMagico() >= 15 and self.sonTodasMascotasVeteranas()
+  method nuevoRol() {if (self.cantidadMascotasConCuernos() > 0) {return hechicero} else throw new Exception(message="No se puede cambiar a hechicero sin mascotas con cuernos")
+}
   }
 
 object hechicero {
@@ -60,6 +58,5 @@ class MascotaMitologica{
   const property tieneCuernos
   const property edad  
 
-  method tieneCuernos() = tieneCuernos
   method esVeterana() = edad >= 10
 }
